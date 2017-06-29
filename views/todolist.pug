@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= title
+    div.welcome
+        p Welcome,
+            span.userName  #{user}
+        a(href='/users/logout') logout
+    if tasks
+        section.todoList
+            ul
+                each val in tasks
+                    li= tasks.title

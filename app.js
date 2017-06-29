@@ -1,25 +1,66 @@
 const express = require('express');
 const path = require('path');
 const url = require('url');
-// const cookieParser = require('cookie-parser'); not needed
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const expressValidator = require('express-validator');
+// const db = require('./models');
+// const models = require('./models');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const todoList = require('./routes/todolist');
 
 const app = express();
+
+// const Sequelize = require('sequelize');
+//
+// const connection = new Sequelize('postgres', 'postgres', 'root', {
+//         dialect: 'postgres'
+//     }
+// );
+//
+// const User = connection.define('Users', {
+//         name: {
+//             type: Sequelize.STRING,
+//             unique: true,
+//             allowNull: false
+//         },
+//         password: Sequelize.STRING
+// //         // time: {
+// //         //     type: Sequelize.DATE,
+// //         //     allowNull: true,
+// //         //     defaultValue: new Date()
+// //         //     get: function () {
+// //         //             return this.getDataValue('time').toISOString();
+// //         //     }
+// //         // }
+// //     // },
+// //     // {
+// //     //     timestamps: false
+//     });
+// //
+// connection.sync({
+//     force: true,
+//     logging: console.log
+// })
+//     .then(() => {
+//         User.create({
+//             name: 'admin',
+//             password: 'qwer1234',
+//             // time: new Date()
+//         });
+//     });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// app.use(bodyParser.json()); not used
-// app.use(cookieParser()); not needed
-
 // middleware
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 app.use(expressValidator());
 app.use(expressSession({secret: 'doublesecretprobation', saveUninitialized: true, resave: false}));
 
@@ -29,6 +70,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // route dirs
 app.use('/', index);
 app.use('/users', users);
+app.use('/todolist', todoList);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
